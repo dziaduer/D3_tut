@@ -1,22 +1,23 @@
-let data = [], width = 2000, height = 2000, numPoints = 2000;
+let food = [], width = 2000, height = 2000, numPoints = 2000;
+
+var field = d3.select('svg')
 
 let zoom = d3.zoom()
 	.on('zoom', handleZoom);
 
 function handleZoom(e) {
-	d3.select('svg g')
+	field.select('g')
 		.attr('transform', e.transform);
 }
 
 function initZoom() {
-	d3.select('svg')
-		.call(zoom);
+	field.call(zoom);
 }
 
 function updateData() {
-	data = [];
+	food = [];
 	for(let i=0; i<numPoints; i++) {
-		data.push({
+		food.push({
 			id: i,
 			x: Math.random() * width,
 			y: Math.random() * height
@@ -25,9 +26,9 @@ function updateData() {
 }
 
 function update() {
-	d3.select('svg g')
+	field.select('g')
 		.selectAll('circle')
-		.data(data)
+		.data(food)
 		.join('circle')
         .attr('fill',function() {return "hsl(" + Math.random() * 360 + ",100%,50%)"; })
 		.attr('cx', function(d) { return d.x; })
