@@ -2,6 +2,16 @@ let food = [], width = 2000, height = 2000, numPoints = 2000;
 
 var field = d3.select('svg')
 
+function addBackground()
+{
+	field.select('g')
+	.append('rect')
+	.attr('fill', '#fefefe')
+	.attr('height', height)
+	.attr('width', width);
+}
+
+
 let zoom = d3.zoom()
 	.on('zoom', handleZoom);
 
@@ -36,6 +46,7 @@ function update() {
 		.attr('r', 3);
 }
 
+addBackground();
 initZoom();
 updateData();
 update();
