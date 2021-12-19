@@ -1,8 +1,9 @@
 
-let ballsData = [], xPos = 1000, yPos = 1000, radius = 100, speed = 7, moving = false;
+let ballsData = [], xPos = 1000, yPos = 1000, radius = 100, speed = 5, moving = false;
 
 let balls = [];
 
+let xDestination = 1000, yDestination = 1000, xPosition = 1000, yPosition = 1000;
 
 function newBall() {
     ballsData.push({
@@ -16,67 +17,58 @@ function updateBall() {
         balls[0] = field.select('g').append('circle')
 		.data(ballsData)
 		.join('circle')
-        .attr('fill', '#000000')
+        .attr('fill', '#13c2c1')
 		.attr('cx', xPos)
 		.attr('cy', yPos)
 		.attr('r', radius)
         .attr('id', 'ball_0');
-        
-        
+        let windownWidth = field.style('width').slice(0, -2);
+        let windownHeight = field.style('height').slice(0, -2);
+        field.select('g').attr('transform', 'translate(' + (+windownWidth / 2 - xPos) + ',' + (+windownHeight  / 2 - yPos) + ')')    
 }
 
-
-
-function moveBallButton()
-{
-    let xVal = +document.getElementById('x-input').value;
-    let yVal = +document.getElementById('y-input').value;
-    moveBall(xVal, yVal);
-}
-
-
-
-function moveBall(x, y) {
+function moveBall() {
+    let distance = Math.sqrt(Math.pow(xDestination - xPosition, 2) + Math.pow(yDestination - yPosition, 2));
+    if (distance > speed) {
+        ratio = speed / distance;
+    }
+    else ratio = 1;
+    let x = (1 - ratio) * xPosition + ratio * xDestination;
+    let y = (1 - ratio) * yPosition + ratio * yDestination;
+    r = balls[0].attr('r');
+    if(x >= width - r){
+        x = width - r;
+    } 
+    else if(x <= r){
+        x = r;
+    }
+    if(y >= height - r){
+        y = height - r;
+    } 
+    else if(y <= r){
+        y = r;
+    }
+    let windownWidth = field.style('width').slice(0, -2);
+    let windownHeight = field.style('height').slice(0, -2);
+    field.select('g')
+        .attr('transform', 'translate(' + (+windownWidth / 2 - x) + ',' + (+windownHeight  / 2 - y) + ')');
     field.select('g')
         .selectAll('#ball_0')
-        .attr('fill', '#13c2c1')
         .attr('cx', x)
         .attr('cy', y);
-    for(let foodBall of food){
-        if(Math.abs(foodBall.x - balls[0].attr('cx')) < balls[0].attr('r')){
-            if(Math.abs(foodBall.y - balls[0].attr('cy')) < balls[0].attr('r')){
-                foodName = '#food_' + foodBall.id;
-                field.select('g')
-                    .selectAll(foodName)
-                    .remove();
-                food.splice(foodBall.id, 1);
-            }
-        }
-    }
+    xPosition = x;
+    yPosition = y;
 }
     
 
-function moveBallBasedOnPointer(event){
-    if(moving == false){
-        moving = true;
-        var coords = d3.pointer(event);
-        xCurr = balls[0].attr('cx');
-        yCurr = balls[0].attr('cy');
-        distance = Math.sqrt(Math.pow(coords[0] - xCurr, 2) + Math.pow(coords[1] - yCurr, 2));
-        if(distance > speed){
-            ratio = speed / distance;
-        }
-        else ratio = 1;
-        xDest = (1 - ratio) * xCurr + ratio * coords[0];
-        yDest = (1 - ratio) * yCurr + ratio * coords[1];
-        //console.log("Current: x = " + xCurr + " y = " + yCurr + " Pointer: x = " + coords[0] + " y = " + coords[1] + " Moving to: x = " + xDest + " y = " + yDest);
-        moveBall(xDest, yDest);
-        setTimeout(function () {
-            moving = false;
-        }, 3);
-        
-    }
+function moveBallBasedOnPointer(event) {
+    var coords = d3.pointer(event);
+    xDestination = coords[0];
+    yDestination = coords[1];        
 }
+
+
+
 
 field.select('g').on('mousemove', (event) => {
     moveBallBasedOnPointer(event);
@@ -85,3 +77,4 @@ field.select('g').on('mousemove', (event) => {
 
 newBall();
 updateBall();
+setInterval(moveBall, 1);
