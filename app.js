@@ -1,4 +1,5 @@
 let food = [], width = 2000, height = 2000, numPoints = 2000;
+let foods = [];
 
 var field = d3.select('svg')
 
@@ -30,7 +31,8 @@ function updateData() {
 		food.push({
 			id: i,
 			x: Math.random() * width,
-			y: Math.random() * height
+			y: Math.random() * height,
+			color: "hsl(" + Math.random() * 360 + ",100%,50%)"
 		});
 	}
 }
@@ -40,9 +42,10 @@ function update() {
 		.selectAll('circle')
 		.data(food)
 		.join('circle')
-        .attr('fill',function() {return "hsl(" + Math.random() * 360 + ",100%,50%)"; })
+        .attr('fill',function(d) {return d.color })
 		.attr('cx', function(d) { return d.x; })
 		.attr('cy', function(d) { return d.y; })
+		.attr('id', 'food_' + function(d) { return d.id; })
 		.attr('r', 3);
 }
 
