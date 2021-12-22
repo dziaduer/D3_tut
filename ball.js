@@ -7,26 +7,29 @@ let xDestination = 1000, yDestination = 1000, xPosition = 1000, yPosition = 1000
 
 function newBall() {
     ballsData.push({
-        id: 0,
-		x: 100,
+        id: 'ball_' + 0,
+		x: 0,
 		y: 100
     });
+    console.log(ballsData[0].id)
 }
 
+// Place ball on the field
 function updateBall() {
         balls[0] = field.select('g').append('circle')
 		.data(ballsData)
 		.join('circle')
         .attr('fill', '#13c2c1')
-		.attr('cx', xPos)
-		.attr('cy', yPos)
+		.attr('cx', function(d) { return d.x; })
+		.attr('cy', function(d) { return d.y; })
 		.attr('r', radius)
-        .attr('id', 'ball_0');
+        .attr('id', function(d) { return d.id; });
         let windownWidth = field.style('width').slice(0, -2);
         let windownHeight = field.style('height').slice(0, -2);
         field.select('g').attr('transform', 'translate(' + (+windownWidth / 2 - xPos) + ',' + (+windownHeight  / 2 - yPos) + ')')    
 }
 
+// Function executin ball movement
 function moveBall() {
     let distance = Math.sqrt(Math.pow(xDestination - xPosition, 2) + Math.pow(yDestination - yPosition, 2));
     if (distance > speed) {
@@ -60,7 +63,7 @@ function moveBall() {
     yPosition = y;
 }
     
-
+// Reads pointer location and updates destination coordinates
 function moveBallBasedOnPointer(event) {
     var coords = d3.pointer(event);
     xDestination = coords[0];

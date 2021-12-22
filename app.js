@@ -1,4 +1,4 @@
-let food = [], width = 3000, height = 3000, numPoints = 2000, foodRadius = 3;
+let food = [], width = 3000, height = 3000, numPoints = 200, foodRadius = 3;
 let foods = [];
 
 var field = d3.select('svg')
@@ -34,7 +34,7 @@ function updateData() {
 	food = [];
 	for(let i=0; i<numPoints; i++) {
 		food.push({
-			id: i,
+			id: 'food_' + i,
 			x: Math.random() * (width - foodRadius * 2) + foodRadius,
 			y: Math.random() * (height - foodRadius * 2) + foodRadius,
 			color: "hsl(" + Math.random() * 360 + ",100%,50%)"
@@ -50,8 +50,8 @@ function update() {
         .attr('fill',function(d) {return d.color })
 		.attr('cx', function(d) { return d.x; })
 		.attr('cy', function(d) { return d.y; })
-		.attr('id', 'food_' + function(d) { return d.id; })
-		.attr('r', foodRadius);
+		.attr('id', function(d) { return d.id; })
+		.attr('r', foodRadius)
 }
 
 addBackground();
