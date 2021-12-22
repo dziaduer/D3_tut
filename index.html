@@ -17,7 +17,7 @@
       <button onclick="moveBallButton()" class="btn btn-primary m-1">MOVE</button>
       <form onsubmit="return false">
         <div class="form-floating m-1">
-          <input id="x-input" type="text" class="form-control form-control" placeholder="x">
+          <input id="name-input" type="text" class="form-control form-control" placeholder="name">
         </div>
       </form>
       <form onsubmit="return false">
@@ -27,7 +27,11 @@
       </form>
     </div>
     <svg class="content">
-      <g></g>
+      <g id='field'>
+        <g id='background'></g>
+        <g id='foods'></g>
+        <g id='players'></g>
+      </g>
     </svg>
   </div>
 </body>
