@@ -4,27 +4,26 @@ let playerData = [];
 
 
 
-
-var field = d3.select('svg'), backgroundLayer = field.select('g #foods'), foodLayer = field.select('g #foods'), playerLayer = field.select('g #players');
+var field = d3.select('svg'), foodLayer = field.select('g #foods'), playerLayer = field.select('g #players');
 
 // Draw horizontal and vertical paths in the background
 function addBackground() {
-	backgroundLayer
+	foodLayer
 		.append('rect')
 		.attr('fill', '#fefefe')
 		.attr('height', height)
 		.attr('width', width);
 	for (let i = 0; i <= width / 20; i++) {
-		backgroundLayer
+		foodLayer
 			.append('line')
 			.attr('x1', i * 20)
 			.attr('y1', 0)
 			.attr('x2', i * 20)
 			.attr('y2', height)
-			.attr('stroke', '#eaeaea');
+			.attr('classed', 'background');
 	}
 	for (let i = 0; i <= height / 20; i++) {
-		backgroundLayer
+		foodLayer
 			.append('line')
 			.attr('x1', 0)
 			.attr('y1', i * 20)
@@ -47,7 +46,7 @@ function updateData() {
 }
 
 function coordinateMap(){
-	
+
 }
 
 function update() {
